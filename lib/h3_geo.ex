@@ -9,9 +9,17 @@ defmodule H3Geo do
   converting existing geometries into H3 cell indexes.
   """
 
-  use Rustler,
+  version = Mix.Project.config()[:version]
+
+  use RustlerPrecompiled,
     otp_app: :h3geo,
-    crate: :h3geo
+    crate: :h3geo,
+    base_url: "https://github.com/warborn/h3geo/releases/download/v#{version}",
+    force_build: System.get_env("FORCE_H3GEO_BUILD") in ["1", "true"],
+    targets:
+      Enum.uniq(["aarch64-unknown-linux-musl" | RustlerPrecompiled.Config.default_targets()]),
+    version: version,
+    nif_versions: ["2.15"]
 
   @type index :: pos_integer()
   @type precision :: 0..15
