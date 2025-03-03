@@ -26,8 +26,7 @@ defmodule H3Geo.MixProject do
 
   defp deps do
     [
-      {:rustler, "~> 0.31", optional: true},
-      {:rustler_precompiled, "~> 0.7"},
+      {:rustler, "~> 0.31"},
       {:geo, "~> 3.6"},
       {:ex_doc, "~> 0.31", only: :dev, runtime: false},
       {:benchee, "~> 1.0", only: :dev}

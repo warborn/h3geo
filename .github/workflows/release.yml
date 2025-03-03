@@ -60,12 +60,12 @@ jobs:
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: "1.69.0"
+          toolchain: stable
           target: ${{ matrix.job.target }}
 
       - name: Build the project
         id: build-crate
-        uses: philss/rustler-precompiled-action@v1.1.0
+        uses: philss/rustler-precompiled-action@v1.1.4
         with:
           project-name: h3geo
           project-version: ${{ env.PROJECT_VERSION }}

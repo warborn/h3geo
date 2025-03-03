@@ -1,3 +1,6 @@
 import Config
 
-config :rustler_precompiled, :force_build, h3geo: true
+# Add Rustler as a dependency
+config :h3geo, :rustler_opts,
+  otp_app: :h3geo,
+  crate: "h3geo"
