@@ -190,6 +190,25 @@ fn uncompact(cells: Vec<u64>, resolution: u8) -> Result<Vec<u64>, Atom> {
     return Ok(uncompacted_iter.map(|cell| u64::from(cell)).collect());
 }
 
+#[rustler::nif]
+fn cell_to_boundary(cell: u64) -> Result<Vec<Coordinate>, Atom> {
+    let index = match CellIndex::try_from(cell) {
+        Ok(index) => index,
+        Err(_e) => return Err(atoms::invalid_cell_index()),
+    };
+
+    let boundary = index.boundary();
+    let coordinates = boundary
+        .iter()
+        .map(|latlng| Coordinate {
+            x: f64::from(latlng.lng()),
+            y: f64::from(latlng.lat()),
+        })
+        .collect();
+
+    return Ok(coordinates);
+}
+
 fn coordinates_to_line_string(coords: Vec<Coordinate>) -> GeoLineString {
     let geocoords = coords
         .into_iter()
@@ -216,6 +235,7 @@ rustler::init!(
         polygon_to_cells,
         multipolygon_to_cells,
         compact,
-        uncompact
+        uncompact,
+        cell_to_boundary
     ]
 );

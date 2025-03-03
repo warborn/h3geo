@@ -80,4 +80,15 @@ defmodule H3Geo do
   @spec uncompact(list(index()), precision()) ::
           {:ok, list(index())} | {:error, :invalid_cell_index | :invalid_resolution}
   def uncompact(_indexes, _resolution), do: :erlang.nif_error(:nif_not_loaded)
+
+  @doc """
+  Takes a cell index and returns a list of coordinates representing the boundary of the cell.
+
+  The coordinates are returned as a list of {longitude, latitude} tuples in degrees.
+
+  [Rust documentation](https://docs.rs/h3o/latest/h3o/struct.CellIndex.html#method.boundary)
+  """
+  @spec cell_to_boundary(index()) ::
+          {:ok, list({float(), float()})} | {:error, :invalid_cell_index}
+  def cell_to_boundary(_index), do: :erlang.nif_error(:nif_not_loaded)
 end

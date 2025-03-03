@@ -102,4 +102,27 @@ defmodule H3GeoTest do
       assert {:ok, ^cells} = H3Geo.uncompact(compacted, 6)
     end
   end
+
+  describe "cell_to_boundary/1" do
+    test "it returns the correct boundary coordinates" do
+      cell = 0x86195985FFFFFFF
+
+      assert {:ok, coordinates} = H3Geo.cell_to_boundary(cell)
+      assert is_list(coordinates)
+      assert length(coordinates) > 0
+
+      # Each coordinate should be a tuple of {lng, lat}
+      Enum.each(coordinates, fn coord ->
+        assert is_tuple(coord)
+        assert tuple_size(coord) == 2
+        {lng, lat} = coord
+        assert is_float(lng)
+        assert is_float(lat)
+      end)
+    end
+
+    test "it errors with an invalid cell index" do
+      assert {:error, :invalid_cell_index} == H3Geo.cell_to_boundary(0)
+    end
+  end
 end
